@@ -82,7 +82,7 @@ Service Info: Host: metasploitable; OS: Unix
 
 Nmap done: 1 IP address (1 host up) scanned in 11.87 seconds
 ```
-Fase 2: Ataque de Força Bruta (FTP)
+### ⚡Fase 2: Ataque de Força Bruta (FTP)
 Com a porta 21 (FTP) confirmada como aberta, o próximo passo foi usar o Medusa para realizar um ataque de força bruta.
 
 Comando Executado:
