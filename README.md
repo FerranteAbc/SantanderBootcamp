@@ -82,7 +82,7 @@ Service Info: Host: metasploitable; OS: Unix
 
 Nmap done: 1 IP address (1 host up) scanned in 11.87 seconds
 ```
-### ⚡Fase 2: Ataque de Força Bruta (FTP)
+### ⚡ Fase 2: Ataque de Força Bruta (FTP)
 Com a porta 21 (FTP) confirmada como aberta, o próximo passo foi usar o Medusa para realizar um ataque de força bruta.
 
 Comando Executado:
@@ -93,7 +93,7 @@ Resultado (Evidência): O Medusa teve sucesso em encontrar uma credencial válid
 ```
 2025-11-04 22:05:54 ACCOUNT FOUND: [ftp] Host: 192.168.0.10 User: msfadmin Password: msfadmin
 ```
-Fase 3: Ataque de Força Bruta (SMB)
+### ⚡ Fase 3: Ataque de Força Bruta (SMB)
 Seguindo a mesma lógica do FTP, o próximo alvo foi o serviço SMB, confirmado nas portas 139 e 445 pelo Nmap.
 
 Comando Executado:
