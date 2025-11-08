@@ -59,7 +59,7 @@ Aqui será detalhado o passo a passo técnico de cada ataque.
 
 ---
 
-### Fase 1: Reconhecimento (Scanning)
+### ⚡Fase 1: Reconhecimento (Scanning)
 
 O primeiro passo foi identificar os serviços ativos na máquina alvo. Utilizei o Nmap para realizar uma varredura de portas.
 
